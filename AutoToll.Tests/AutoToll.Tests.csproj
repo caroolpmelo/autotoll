@@ -18,4 +18,8 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AutoToll.Domain\AutoToll.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
