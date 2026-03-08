@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="AutoToll.Api/AutoToll.Api.csproj" />
+  <Project Path="AutoToll.Domain/AutoToll.Domain.csproj" />
+  <Project Path="AutoToll.Infrastructure/AutoToll.Infrastructure.csproj" />
+  <Project Path="AutoToll.Tests/AutoToll.Tests.csproj" />
+</Solution>
