@@ -1,23 +1,42 @@
-﻿using AutoToll.Domain.Models;
+﻿using AutoToll.Domain.Interfaces;
+using AutoToll.Domain.Models;
 
 namespace AutoToll.Domain.Services
 {
     public class TollCalculator
     {
-        public decimal Calculate(Vehicle vehicle)
+        private readonly IEnumerable<ITollRule> _rules;
+
+        public TollCalculator(IEnumerable<ITollRule> rules)
         {
-            if (vehicle.Type == Vehicle.VehicleType.StandardCar)
+            _rules = rules;
+        }
+
+        public decimal CalculateToll(Vehicle vehicle, DateTime transitTime)
+        {
+            
+            var applicableRule = _rules.FirstOrDefault(r => r.IsApplicable(vehicle, transitTime));
+
+            if (applicableRule == null )
             {
-                return 5.00m; // Tarifa fixa para carro de passeio padrão
+                throw new InvalidOperationException("Nenhuma regra de pedágio aplicável para este veículo.");
             }
 
-            if (vehicle.Type == Vehicle.VehicleType.Truck)
+            return applicableRule.Calculate(vehicle);
+        }
+
+        public decimal CalculateTotalToll(IEnumerable<Vehicle> vehicles, DateTime transitTime)
+        {
+            // one possible optimization is to filter applicable rules first, then calculate tolls
+            decimal totalToll = 0;
+            foreach (var rule in _rules)
             {
-                return 5.00m + (vehicle.Axles * 2.50m); // Tarifa fixa para carro de passeio padrão
+                if (rule.IsApplicable(vehicle, transitTime))
+                {
+                    totalToll += rule.Calculate(vehicle);
+                }
             }
-            // Lógica para outros tipos de veículos pode ser adicionada aqui
-            return 0.00m; // Valor padrão para veículos não especificados
-            //return 0.00m; // Valor padrão para veículos não especificados
+            return totalToll;
         }
     }
 }
