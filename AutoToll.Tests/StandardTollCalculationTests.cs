@@ -14,8 +14,9 @@ namespace AutoToll.Tests
         public void Calculate_GivenStandardCarInNormalHours_ShouldReturnBaseFare()
         {
             // Arrange
-            var vehicle = new Vehicle { Type = Vehicle.VehicleType.StandardCar };
-            var rules = new List<ITollRule> { new StandardCarRule() };
+            var rule = new StandardCarRule();
+            var vehicle = new Vehicle(rule) { Type = Vehicle.VehicleType.StandardCar };
+            var rules = new List<ITollRule> { rule };
             var tollCalculator = new TollCalculator(rules);
             decimal expectedFare = baseFare;
 
@@ -32,12 +33,13 @@ namespace AutoToll.Tests
         public void Calculate_GivenTruckWithThreeAxles_ShouldReturnMultiplierFare()
         {
             // Arrange
-            var vehicle = new Vehicle
+            var rule = new TruckRule();
+            var vehicle = new Vehicle(rule)
             {
                 Type = Vehicle.VehicleType.Truck,
                 Axles = 3
             };
-            var rules = new List<ITollRule> { new TruckRule() };
+            var rules = new List<ITollRule> { rule };
             var tollCalculator = new TollCalculator(rules);
             decimal expectedFare = baseFare + (vehicle.Axles * baseFare/2);
 
@@ -52,8 +54,9 @@ namespace AutoToll.Tests
         public void Calculate_GivenMotorcycle_ShouldReturnHalfFare()
         {
             // Arrange
-            var vehicle = new Vehicle { Type = Vehicle.VehicleType.Motorcycle };
-            var rules = new List<ITollRule> { new MotorcycleRule() };
+            var rule = new MotorcycleRule();
+            var vehicle = new Vehicle(rule) { Type = Vehicle.VehicleType.Motorcycle };
+            var rules = new List<ITollRule> { rule };
             var tollCalculator = new TollCalculator(rules);
             decimal expectedFare = baseFare / 2;
 

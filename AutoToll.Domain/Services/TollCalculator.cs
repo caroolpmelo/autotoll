@@ -25,18 +25,19 @@ namespace AutoToll.Domain.Services
             return applicableRule.Calculate(vehicle);
         }
 
-        public decimal CalculateTotalToll(IEnumerable<Vehicle> vehicles, DateTime transitTime)
-        {
-            // one possible optimization is to filter applicable rules first, then calculate tolls
-            decimal totalToll = 0;
-            foreach (var rule in _rules)
-            {
-                if (rule.IsApplicable(vehicle, transitTime))
-                {
-                    totalToll += rule.Calculate(vehicle);
-                }
-            }
-            return totalToll;
-        }
+        // TODO
+        //public decimal CalculateTotalToll(IEnumerable<Vehicle> vehicles, DateTime transitTime)
+        //{
+        //    // one possible optimization is to filter applicable rules first, then calculate tolls
+        //    decimal totalToll = 0;
+        //    foreach (var rule in _rules)
+        //    {
+        //        if (rule.IsApplicable(vehicle, transitTime))
+        //        {
+        //            totalToll += rule.Calculate(vehicle);
+        //        }
+        //    }
+        //    return totalToll;
+        //}
     }
 }
