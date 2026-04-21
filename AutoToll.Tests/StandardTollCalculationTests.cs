@@ -1,5 +1,5 @@
-﻿using AutoToll.Domain.Interfaces;
-using AutoToll.Domain.Models;
+﻿using AutoToll.Domain.Entities;
+using AutoToll.Domain.Interfaces;
 using AutoToll.Domain.Rules;
 using AutoToll.Domain.Services;
 
@@ -14,9 +14,12 @@ namespace AutoToll.Tests
         public void Calculate_GivenStandardCarInNormalHours_ShouldReturnBaseFare()
         {
             // Arrange
-            var rule = new StandardCarRule();
-            var vehicle = new Vehicle(rule) { Type = Vehicle.VehicleType.StandardCar };
-            var rules = new List<ITollRule> { rule };
+            var vehicle = new Vehicle
+            {
+                Type = VehicleType.StandardCar,
+                LicensePlate = "ABC1234",
+            };
+            var rules = new List<ITollRule> { new StandardCarRule() };
             var tollCalculator = new TollCalculator(rules);
             decimal expectedFare = baseFare;
 
@@ -33,13 +36,13 @@ namespace AutoToll.Tests
         public void Calculate_GivenTruckWithThreeAxles_ShouldReturnMultiplierFare()
         {
             // Arrange
-            var rule = new TruckRule();
-            var vehicle = new Vehicle(rule)
+            var vehicle = new Vehicle
             {
-                Type = Vehicle.VehicleType.Truck,
+                Type = VehicleType.Truck,
+                LicensePlate = "ABC1234",
                 Axles = 3
             };
-            var rules = new List<ITollRule> { rule };
+            var rules = new List<ITollRule> { new TruckRule() };
             var tollCalculator = new TollCalculator(rules);
             decimal expectedFare = baseFare + (vehicle.Axles * baseFare/2);
 
@@ -54,9 +57,12 @@ namespace AutoToll.Tests
         public void Calculate_GivenMotorcycle_ShouldReturnHalfFare()
         {
             // Arrange
-            var rule = new MotorcycleRule();
-            var vehicle = new Vehicle(rule) { Type = Vehicle.VehicleType.Motorcycle };
-            var rules = new List<ITollRule> { rule };
+            var vehicle = new Vehicle
+            {
+                Type = VehicleType.Motorcycle,
+                LicensePlate = "ABC1234",
+            };
+            var rules = new List<ITollRule> { new MotorcycleRule() };
             var tollCalculator = new TollCalculator(rules);
             decimal expectedFare = baseFare / 2;
 
